@@ -7,7 +7,6 @@ Simple arcade Breakout game. Files split by responsibility for maintainability:
 - `ui.js` — DOM creation & rendering helpers
 - `physics.js` — ball & collision physics
 - `game.js` — high-level game logic and state
-- `main.js` — bootstraps app and wires events
 - `assets/` — images, icons, and sfx (brick-hit, paddle-hit, win, lose, powerup)
 
 ## Game States
@@ -76,7 +75,6 @@ Example output:
 
 ## Game Logic (in `game.js`)
 
-- `main()` in `main.js` wires modules and starts game.
 - Implement `ballDestroy(brick)`:
   - Remove brick from DOM and grid, update score (e.g. +10), play sound, spawn power-up with chance.
   - Check if all bricks destroyed ⇒ call `win()`.
