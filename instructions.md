@@ -105,6 +105,9 @@ Example output:
 ## Bonus
 
 - `insane` mode: 10×10 grid, increased ball speed, decreased ball & paddle size.
+- special background animation for `insane` mode
+- eternal mode (endless)
+- Brick animation.
 
 ## Assets & Audio
 
