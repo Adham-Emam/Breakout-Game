@@ -1,0 +1,241 @@
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+
+:root {
+  --game-theme: #ffffff;
+
+  --paddle-width: 100px;
+  --paddle-height: 20px;
+  --paddle-color: var(--game-theme);
+  --ball-size: 15px;
+  --ball-color: var(--game-theme);
+  --brick-width: 50px;
+  --brick-height: 15px;
+  --brick-color: var(--game-theme);
+
+  --background-color: #191919;
+  --text-color: #ffffff;
+  --red: #e9190f;
+  --gradient: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+  --header-shadow: 0 0 25px #777, -5px 10px 0 #111, 10px 10px 0 #000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Press Start 2P', monospace;
+  transition-duration: 0.5s;
+}
+body {
+  background-color: var(--background-color);
+  background: var(--gradient);
+  overflow: hidden;
+}
+
+a {
+  text-decoration: none;
+  color: #ffffff;
+}
+ul {
+  list-style: none;
+}
+input {
+  outline: none;
+  border: none;
+}
+.container {
+  height: 100vh;
+  width: 100vw;
+  color: var(--text-color);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+.hidden {
+  display: none !important;
+}
+
+/* Start Background Animation */
+#stars,
+#stars2,
+#stars3 {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+}
+
+#stars {
+  width: 1px;
+  height: 1px;
+  background: transparent;
+  animation: animStar 50s linear infinite;
+}
+
+#stars:after {
+  content: ' ';
+  position: absolute;
+  top: 2000px;
+  width: 1px;
+  height: 1px;
+  background: transparent;
+}
+
+#stars2 {
+  width: 2px;
+  height: 2px;
+  background: transparent;
+  animation: animStar 100s linear infinite;
+}
+
+#stars2:after {
+  content: ' ';
+  position: absolute;
+  top: 2000px;
+  width: 2px;
+  height: 2px;
+  background: transparent;
+}
+
+#stars3 {
+  width: 3px;
+  height: 3px;
+  background: transparent;
+  animation: animStar 150s linear infinite;
+}
+
+#stars3:after {
+  content: ' ';
+  position: absolute;
+  top: 2000px;
+  width: 3px;
+  height: 3px;
+  background: transparent;
+}
+
+@keyframes animStar {
+  from {
+    transform: translateY(0px);
+  }
+  to {
+    transform: translateY(-2000px);
+  }
+}
+
+/* Start Landing */
+.landing {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.landing h1 {
+  font-size: 4.5em;
+  text-shadow: var(--header-shadow);
+}
+.landing ul {
+  margin-top: 1em;
+  display: flex;
+  flex-direction: column;
+  font-size: 1.5em;
+}
+
+.landing ul li {
+  padding: 20px;
+  cursor: pointer;
+}
+.landing ul li::before,
+.landing ul li::after {
+  opacity: 0;
+  transition-duration: 0.2s;
+}
+.landing ul li::before {
+  content: '>';
+  margin-right: 0.5em;
+}
+.landing ul li::after {
+  content: '<';
+  margin-left: 0.5em;
+}
+.landing ul li:hover,
+.landing ul li:hover {
+  text-shadow: 0 0 25px #777;
+}
+.landing ul li:hover::before,
+.landing ul li:hover::after {
+  opacity: 1;
+}
+.start-menu input {
+  background-color: transparent;
+  color: var(--text-color);
+  border: 1px solid var(--text-color);
+  border-radius: 12px;
+  border-bottom: 1px solid var(--text-color);
+  font-size: 1.2em;
+  padding: 10px 20px;
+  text-align: center;
+}
+.start-menu .error {
+  color: var(--red);
+  margin: 0.5em 0 1em 0;
+}
+.sound-control {
+  position: absolute;
+  right: 20px;
+  bottom: 20px;
+  border: 1px solid var(--text-color);
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-radius: 12px;
+  font-size: 1.5em;
+  color: var(--text-color);
+  cursor: pointer;
+}
+.sound-control:hover i {
+  opacity: 0.5;
+}
+.lava {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cfilter id='lava' color-interpolation-filters='sRGB' x='0%25' y='0%25' height='100%25' width='100%25'%3E%3CfeTurbulence result='cloudbase' baseFrequency='0.01' numOctaves='3' seed='1' /%3E%3CfeColorMatrix in='cloudbase' type='hueRotate' values='0' result='cloud'%3E%3Canimate attributeName='values' from='0' to='360' dur='4s' repeatCount='indefinite' /%3E%3C/feColorMatrix%3E%3CfeColorMatrix in='cloud' result='wispy' type='matrix' values='-3.4 -3.8 0.8 3.3 4.9 1.9 -2.6 -4.4 0.3 1.2 -2.3 -0.9 -1.4 -1.6 -1.6 4.8 2.8 4.2 2.1 2.1' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23lava)'%3E%3C/rect%3E%3C/svg%3E");
+  background-size: cover;
+  color: #fff;
+  -webkit-text-fill-color: transparent;
+  -webkit-background-clip: text;
+  background-clip: text;
+  font-weight: bold;
+}
+.insane {
+  text-align: center;
+  color: #fff;
+}
+/* Start LeaderBoard */
+#leaderboard {
+  width: 100%;
+  border-collapse: collapse;
+  color: #fff;
+  font-family: 'Roboto', sans-serif;
+}
+
+#leaderboard th,
+#leaderboard td {
+  border: 1px solid #333;
+  padding: 8px 12px;
+  text-align: center;
+}
+
+#leaderboard thead {
+  background-color: #222;
+}
+
+#leaderboard tbody tr:nth-child(even) {
+  background-color: #2a2a2a;
+}
+/* End LeaderBoard */
+/* End Landing */

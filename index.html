@@ -3,10 +3,108 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
+    <title>Ball Busters</title>
+
+    <!-- Styles -->
     <link rel="stylesheet" href="css/styles.css" />
+    <!-- FontAwesome CDN -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+    />
   </head>
   <body>
+    <div class="container">
+      <section class="landing">
+        <div class="background">
+          <div id="stars"></div>
+          <div id="stars2"></div>
+          <div id="stars3"></div>
+        </div>
+
+        <h1>Ball Busters</h1>
+        <ul class="main-menu">
+          <li onclick="openStartMenu()">Start Game</li>
+          <li onclick="openLeaderboardMenu()">LeaderBoard</li>
+          <li onclick="openSettingsMenu()">Settings</li>
+        </ul>
+        <ul class="start-menu hidden">
+          <form>
+            <input type="text" placeholder="Enter your name" id="playerName" />
+          </form>
+          <div class="error hidden"></div>
+          <li onclick="selectDifficulty()">Next</li>
+          <li onclick="openMainMenu()">Back to Menu</li>
+        </ul>
+        <ul class="difficulty hidden">
+          <li onclick="setDifficulty('easy')">Easy</li>
+          <li onclick="setDifficulty('medium')">Medium</li>
+          <li onclick="setDifficulty('hard')">Hard</li>
+          <li onclick="setDifficulty('insane')" class="insane">
+            <span class="lava">Insane</span>
+          </li>
+          <li onclick="openStartMenu()">Back</li>
+        </ul>
+        <ul class="leaderboard hidden">
+          <table id="leaderboard">
+            <thead>
+              <tr>
+                <th>Player Name</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody>
+              <!-- rows will be injected from JS -->
+            </tbody>
+          </table>
+
+          <li onclick="openMainMenu()">Back to Menu</li>
+        </ul>
+        <ul class="settings hidden">
+          <li onclick="openControlsMenu()">Controls</li>
+          <li onclick="openThemeMenu()">Theme</li>
+          <li onclick="openMainMenu()">Back to Menu</li>
+        </ul>
+        <ul class="controls hidden">
+          <div class="options-container">
+            <li onclick="setControls('keyboard')">Keyboard</li>
+            <li onclick="setControls('mouse')">Mouse</li>
+          </div>
+          <li onclick="openSettingsMenu()">Back</li>
+        </ul>
+        <ul class="theme hidden">
+          <h3>UI Theme</h3>
+          <li onclick="setUITheme('light')">Light</li>
+          <li onclick="setUITheme('dark')">Dark</li>
+          <h3>Game Theme</h3>
+          <form>
+            <li>
+              <input
+                type="color"
+                value="#ffffff"
+                id="game-theme"
+                onchange="setGameTheme()"
+              />
+            </li>
+          </form>
+          <li onclick="openSettingsMenu()">Back</li>
+        </ul>
+        <div class="sound-control" onclick="toggleSound()">
+          <i class="fa-solid fa-volume-high"></i>
+          <i class="fa-solid fa-volume-xmark hidden"></i>
+        </div>
+        <div>
+          <audio
+            src="assets/audio/btn_click_sfx.mp3"
+            class="click_sfx hidden"
+          ></audio>
+        </div>
+      </section>
+      <section class="game">
+        <canvas id="gameCanvas" class="hidden"></canvas>
+      </section>
+    </div>
+
     <script src="js/ui.js"></script>
     <script src="js/physics.js"></script>
     <script src="js/game.js"></script>
