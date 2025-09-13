@@ -92,15 +92,18 @@ function openStartMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.start-menu').classList.remove('hidden')
 }
-function selectDifficulty() {
+function validateName() {
   const playerName = document.querySelector('#playerName').value
-  if (playerName && playerName.length > 2) {
-    localStorage.setItem('playerName', playerName)
-    openLeaderboardMenu()
+  const error = document.querySelector('.error')
+  if (playerName && playerName.trim().length > 2) {
+    error.classList.add('hidden')
+    selectDifficulty()
   } else {
-    document.querySelector('.error').classList.remove('hidden')
-    document.querySelector('.error').innerHTML = 'Please enter a valid name'
+    error.classList.remove('hidden')
+    error.innerHTML = 'Please enter a valid name'
   }
+}
+function selectDifficulty() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.difficulty').classList.remove('hidden')
 }
