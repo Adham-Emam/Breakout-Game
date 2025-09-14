@@ -165,11 +165,12 @@ function startGame() {
   document.getElementById('gameCanvas').classList.remove('hidden')
 }
 
-// TODO: continue Scores from localStorage
 const scores = localStorage.getItem('scores') || [
   { player: 'Adham', score: 150 },
   { player: 'Nady', score: 200 },
   { player: 'Youssef', score: 120 },
+  { player: 'Montaser', score: 100 },
+  { player: 'Mohamed', score: 90 },
 ]
 
 const tbody = document.querySelector('#leaderboard tbody')
