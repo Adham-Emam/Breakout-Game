@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 :root {
   --game-theme: #ffffff;
@@ -23,7 +23,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
   transition-duration: 0.5s;
 }
 body {
@@ -75,7 +75,7 @@ input {
 }
 
 #stars:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 1px;
@@ -91,7 +91,7 @@ input {
 }
 
 #stars2:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 2px;
@@ -107,7 +107,7 @@ input {
 }
 
 #stars3:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 3px;
@@ -155,11 +155,11 @@ input {
   transition-duration: 0.2s;
 }
 .landing ul li::before {
-  content: '>';
+  content: ">";
   margin-right: 0.5em;
 }
 .landing ul li::after {
-  content: '<';
+  content: "<";
   margin-left: 0.5em;
 }
 .landing ul li:hover,
@@ -220,7 +220,7 @@ input {
   width: 100%;
   border-collapse: collapse;
   color: #fff;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #leaderboard th,
@@ -237,5 +237,13 @@ input {
 #leaderboard tbody tr:nth-child(even) {
   background-color: #2a2a2a;
 }
+
 /* End LeaderBoard */
 /* End Landing */
+
+/* Start Game Canvas */
+#gameCanvas {
+  width: 100vw;
+  height: 100vh;
+}
+/* End Game Canvas */
