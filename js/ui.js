@@ -62,17 +62,7 @@ function setUITheme(theme) {
   if (localStorage.getItem('uiTheme') != theme) {
     localStorage.setItem('uiTheme', theme)
   }
-  if (theme == 'dark') {
-    document.documentElement.style.setProperty(
-      '--gradient',
-      'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)'
-    )
-    document.documentElement.style.setProperty('--text-color', '#ffffff')
-    document.documentElement.style.setProperty(
-      '--header-shadow',
-      '0 0 25px #777, -5px 10px 0 #111, 10px 10px 0 #000'
-    )
-  } else {
+  if (theme == 'light') {
     document.documentElement.style.setProperty(
       '--gradient',
       'radial-gradient(ellipse at bottom, #d1d2d2ff 0%, #424243ff 100%)'
@@ -82,6 +72,16 @@ function setUITheme(theme) {
     document.documentElement.style.setProperty(
       '--header-shadow',
       '0 0 10px #fff, -5px 10px 0 #fff, 10px 10px 0 #ddd'
+    )
+  } else {
+    document.documentElement.style.setProperty(
+      '--gradient',
+      'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)'
+    )
+    document.documentElement.style.setProperty('--text-color', '#ffffff')
+    document.documentElement.style.setProperty(
+      '--header-shadow',
+      '0 0 25px #777, -5px 10px 0 #111, 10px 10px 0 #000'
     )
   }
 }
