@@ -97,6 +97,7 @@ function validateName() {
   const error = document.querySelector('.error')
   if (playerName && playerName.trim().length > 2) {
     error.classList.add('hidden')
+    localStorage.setItem('playerName', playerName)
     selectDifficulty()
   } else {
     error.classList.remove('hidden')
