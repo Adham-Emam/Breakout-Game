@@ -38,8 +38,8 @@ document.querySelectorAll('form').forEach((form) => {
 
 // Set Colors on page load
 window.addEventListener('load', () => {
-  const gameTheme = localStorage.getItem('gameTheme')
-  const uiTheme = localStorage.getItem('uiTheme')
+  const gameTheme = localStorage.getItem('gameTheme') || '#ffffff'
+  const uiTheme = localStorage.getItem('uiTheme') || 'dark'
   if (gameTheme) {
     document.getElementById('game-theme').value = gameTheme
     document.documentElement.style.setProperty('--game-theme', gameTheme)
