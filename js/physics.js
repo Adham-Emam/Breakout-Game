@@ -6,6 +6,35 @@ function getThemeColor() {
   return localStorage.getItem('gameTheme') || '#ffffff'
 }
 
+function getBaseBallSpeed() {
+  const difficulty = localStorage.getItem('difficulty') || 'normal'
+  switch (difficulty) {
+    case 'easy':
+      return 4
+    case 'normal':
+      return 6
+    case 'hard':
+      return 8
+    case 'insane':
+      return 10
+    default:
+      return 6
+  }
+}
+
+function setBallSpeed(multiplier) {
+  // current speed magnitude
+  const speed = Math.sqrt(ball.vx ** 2 + ball.vy ** 2)
+  // current angle of movement
+  const angle = Math.atan2(ball.vy, ball.vx)
+  // scale speed
+  const newSpeed = speed * multiplier
+
+  // recompute velocity components
+  ball.vx = Math.cos(angle) * newSpeed
+  ball.vy = Math.sin(angle) * newSpeed
+}
+
 let ball = {
   x: canvas.width / 2,
   y: canvas.height - 30,
@@ -135,28 +164,40 @@ function updateBall() {
   ) {
     //supposedly a hotfix for the prependicular loop****revise****
     let hitPosition = (ball.x - paddle.x) / paddle.width
-    let bounceAngle = (hitPosition - 0.5) * 2
+    let bounceAngle = (hitPosition - 0.5) * (Math.PI / 3)
+
     const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy)
-    ball.vx = bounceAngle * speed * 0.7
-    ball.vy = -Math.abs(ball.vy)
+
+    ball.vx = speed * Math.sin(bounceAngle)
+    ball.vy = -speed * Math.cos(bounceAngle)
+
     ball.y = paddle.y - ball.radius - 2
 
-    // ball.vy = -ball.vy;
-    // ball.y = paddle.y - ball.radius - 2;
+    if (localStorage.getItem('difficulty') === 'hard') {
+      setBallSpeed(1.01)
+    } else if (localStorage.getItem('difficulty') === 'insane') {
+      setBallSpeed(1.05)
+      //  console the new speed
+      console.log('ball speed:', speed)
+    }
   }
+
   if (ball.y > canvas.height + 40) {
     resetBall()
   }
 }
 function resetBall() {
+  const baseSpeed = getBaseBallSpeed()
   ball.x = canvas.width / 2
   ball.y = canvas.height - 100
-  ball.vy = -4
+
+  ball.vx = baseSpeed * (Math.random() > 0.5 ? 1 : -1) // random left/right start
+  ball.vy = -baseSpeed
   ball.trail = []
 }
 
 let currentControls = null
-let paddleSpeed = canvas.width * 0.005 // 1% of screen width per frame
+let paddleSpeed = canvas.width * 0.01 // 1% of screen width per frame
 let leftPressed = false
 let rightPressed = false
 
@@ -212,14 +253,13 @@ function runControls() {
   }
 }
 
-// ✅ React when localStorage changes (from settings menu or other tab)
+// React when localStorage changes (from settings menu or other tab)
 window.addEventListener('storage', (e) => {
   if (e.key === 'controls') {
     applyControls(e.newValue)
   }
 })
 
-// prototype gameLoop for adham
 function gameLoop() {
   runControls() // ensures controls applied at least once
   ctx.clearRect(0, 0, canvas.width, canvas.height)
