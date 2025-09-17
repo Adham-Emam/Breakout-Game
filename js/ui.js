@@ -1,3 +1,26 @@
+// Render Score Dynamically
+let score = 0
+const scoreContainer = document.querySelector('.score-container #score')
+scoreContainer.textContent = score
+
+// Generate Hearts
+let attempts = 3
+const heartContainer = document.querySelector('.attempts-container')
+
+for (i = 0; i < attempts; i++) {
+  const heart = document.createElement('img')
+  heart.src = 'assets/images/heart_filled.png'
+  heart.alt = 'Heart-filled'
+  heartContainer.appendChild(heart)
+}
+
+for (i = 0; i < 3 - attempts; i++) {
+  const heart = document.createElement('img')
+  heart.src = 'assets/images/heart_empty.png'
+  heart.alt = 'Heart-empty'
+  heartContainer.appendChild(heart)
+}
+
 // Generate Stars Animation
 function generateBoxShadows(n) {
   let shadows = []

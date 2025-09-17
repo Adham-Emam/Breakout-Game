@@ -3,26 +3,6 @@ let paddleSpeed = canvas.width * 0.01 // 1% of screen width per frame
 let leftPressed = false
 let rightPressed = false
 
-let score = 0
-
-// Generate Hearts
-let attempts = 3
-const heartContainer = document.querySelector('.attempts-container')
-
-for (i = 0; i < attempts; i++) {
-  const heart = document.createElement('img')
-  heart.src = 'assets/images/heart_filled.png'
-  heart.alt = 'Heart-filled'
-  heartContainer.appendChild(heart)
-}
-
-for (i = 0; i < 3 - attempts; i++) {
-  const heart = document.createElement('img')
-  heart.src = 'assets/images/heart_empty.png'
-  heart.alt = 'Heart-empty'
-  heartContainer.appendChild(heart)
-}
-
 function applyControls(controls) {
   // Remove old listeners
   document.onkeydown = null
