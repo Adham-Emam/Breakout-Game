@@ -1,25 +1,5 @@
-// Render Score Dynamically
-let score = 0
-const scoreContainer = document.querySelector('.score-container #score')
-scoreContainer.textContent = score
-
-// Generate Hearts
-let attempts = 3
-const heartContainer = document.querySelector('.attempts-container')
-
-for (i = 0; i < attempts; i++) {
-  const heart = document.createElement('img')
-  heart.src = 'assets/images/heart_filled.png'
-  heart.alt = 'Heart-filled'
-  heartContainer.appendChild(heart)
-}
-
-for (i = 0; i < 3 - attempts; i++) {
-  const heart = document.createElement('img')
-  heart.src = 'assets/images/heart_empty.png'
-  heart.alt = 'Heart-empty'
-  heartContainer.appendChild(heart)
-}
+let difficulty = null
+let controls = 'keyboard'
 
 // Generate Stars Animation
 function generateBoxShadows(n) {
@@ -135,15 +115,18 @@ function selectDifficulty() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.difficulty').classList.remove('hidden')
 }
-// Set difficulty in localStorage and start game loop
+// Set difficulty and start game loop
 document.querySelectorAll('.difficulty li').forEach((li) => {
-  const difficulty = li.dataset.difficulty
+  const selectedDifficulty = li.dataset.difficulty
+  const action = li.dataset.action
 
   li.addEventListener('click', () => {
-    if (difficulty) {
-      localStorage.setItem('difficulty', difficulty)
+    if (selectedDifficulty) {
+      difficulty = selectedDifficulty
+      startGame()
+    } else if (action === 'back') {
+      openStartMenu()
     }
-    startGame()
   })
 })
 
@@ -168,8 +151,8 @@ function openControlsMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.controls').classList.remove('hidden')
 }
-function setControls(controls) {
-  localStorage.setItem('controls', controls)
+function setControls(ctrl) {
+  controls = ctrl
   openSettingsMenu()
 }
 // Sound Control
@@ -201,7 +184,7 @@ function startGame() {
   gameLoop()
 }
 
-const scores = localStorage.getItem('scores') || [
+const scores = [
   { player: 'Adham', score: 150 },
   { player: 'Nady', score: 200 },
   { player: 'Youssef', score: 120 },
@@ -240,9 +223,9 @@ function createBrickGrid(level) {
   // Define the number of rows for each level
   const levelRows = {
     easy: 2,
-    medium: 4,
+    normal: 4,
     hard: 6,
-    insane: 10,
+    insane: 8,
   }
 
   // Iterate over the number of rows for the given level
@@ -260,4 +243,42 @@ function createBrickGrid(level) {
   }
 
   return grid
+}
+
+// Bricks config
+function getBrickDimensions() {
+  return {
+    width: canvas.width * 0.06,
+    height: canvas.height * 0.03,
+  }
+}
+
+const brickPadding = 10
+const brickOffsetTop = 25
+
+function drawBricks(grid) {
+  let color = getThemeColor()
+  const { width: brickWidth, height: brickHeight } = getBrickDimensions()
+
+  // total grid width = (bricks in row * width) + (padding * gaps)
+  const totalGridWidth =
+    grid[0].length * brickWidth + (grid[0].length - 1) * brickPadding
+
+  // Center horizontally
+  const brickOffsetLeft = (canvas.width - totalGridWidth) / 2
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      if (grid[r][c]) {
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop
+
+        ctx.beginPath()
+        ctx.rect(brickX, brickY, brickWidth, brickHeight)
+        ctx.fillStyle = color
+        ctx.fill()
+        ctx.closePath()
+      }
+    }
+  }
 }

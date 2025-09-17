@@ -12,9 +12,8 @@ let ball = {
 }
 
 function getPaddleWidth() {
-  const diff = localStorage.getItem('difficulty')
-  if (diff === 'insane') return 120
-  if (diff === 'hard') return 160
+  if (difficulty === 'insane') return 120
+  if (difficulty === 'hard') return 160
   return 250
 }
 
@@ -29,22 +28,6 @@ const paddle = {
 
 function getThemeColor() {
   return localStorage.getItem('gameTheme') || '#ffffff'
-}
-
-function getBaseBallSpeed() {
-  const difficulty = localStorage.getItem('difficulty') || 'normal'
-  switch (difficulty) {
-    case 'easy':
-      return 4
-    case 'normal':
-      return 6
-    case 'hard':
-      return 8
-    case 'insane':
-      return 10
-    default:
-      return 6
-  }
 }
 
 function setBallSpeed(multiplier) {
@@ -87,7 +70,7 @@ function drawBall() {
   ctx.fill()
   ctx.closePath()
   //glow low mechs
-  ctx.fillStyle = '#dacccc44'
+  ctx.fillStyle = color + '44'
   ctx.beginPath()
   ctx.arc(ball.x - 3, ball.y - 3, ball.radius / 3, 0, Math.PI * 2)
   ctx.fill()
@@ -108,7 +91,7 @@ function drawTrail() {
   }
   ctx.globalAlpha = 1.0 //this resets the transparency  ***https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalAlpha***
 }
-//update trail for memory purposes remember to tell Adham to add this to the game function on main
+
 function updateTrail() {
   ball.trail.unshift({ x: ball.x, y: ball.y }) //
   if (ball.trail.length > 10) {
@@ -172,21 +155,18 @@ function updateBall() {
     ball.x >= paddle.x &&
     ball.x <= paddle.x + paddle.width
   ) {
-    //supposedly a hotfix for the prependicular loop****revise****
     let hitPosition = (ball.x - paddle.x) / paddle.width
     let bounceAngle = (hitPosition - 0.5) * (Math.PI / 3)
-
-    const speed = Math.sqrt(ball.vx * ball.vx + ball.vy * ball.vy)
+    const speed = Math.sqrt(ball.vx ** 2 + ball.vy ** 2)
 
     ball.vx = speed * Math.sin(bounceAngle)
     ball.vy = -speed * Math.cos(bounceAngle)
 
     ball.y = paddle.y - ball.radius - 2
 
-    if (localStorage.getItem('difficulty') === 'hard') {
-      setBallSpeed(1.01)
-    } else if (localStorage.getItem('difficulty') === 'insane') {
-      setBallSpeed(1.02)
+    if (difficulty === 'hard' || difficulty === 'insane') {
+      const multiplier = difficulty === 'hard' ? 1.02 : 1.05
+      setBallSpeed(multiplier)
     }
   }
 
@@ -195,12 +175,16 @@ function updateBall() {
   }
 }
 function resetBall() {
-  const baseSpeed = getBaseBallSpeed()
   ball.x = paddle.x + paddle.width / 2
   ball.y = paddle.y - ball.radius
 
-  ball.vx = baseSpeed * (Math.random() > 0.5 ? 1 : -1) // random left/right start
-  ball.vy = -baseSpeed
+  const angleRange = Math.PI / 4 // max angle from vertical
+  const randomAngle = Math.random() * angleRange - angleRange / 2
+
+  const baseSpeed = 6
+
+  ball.vx = baseSpeed * Math.sin(randomAngle)
+  ball.vy = -baseSpeed * Math.cos(randomAngle)
   ball.trail = []
 }
 resetBall()

@@ -1,9 +1,31 @@
-let currentControls = null
+// Render Score Dynamically
+let score = 0
+const scoreContainer = document.querySelector('.score-container #score')
+scoreContainer.textContent = score
+
+// Generate Hearts
+let attempts = 3
+const heartContainer = document.querySelector('.attempts-container')
+
+for (i = 0; i < attempts; i++) {
+  const heart = document.createElement('img')
+  heart.src = 'assets/images/heart_filled.png'
+  heart.alt = 'Heart-filled'
+  heartContainer.appendChild(heart)
+}
+
+for (i = 0; i < 3 - attempts; i++) {
+  const heart = document.createElement('img')
+  heart.src = 'assets/images/heart_empty.png'
+  heart.alt = 'Heart-empty'
+  heartContainer.appendChild(heart)
+}
+
 let paddleSpeed = canvas.width * 0.01 // 1% of screen width per frame
 let leftPressed = false
 let rightPressed = false
 
-function applyControls(controls) {
+function runControls() {
   // Remove old listeners
   document.onkeydown = null
   document.onkeyup = null
@@ -29,24 +51,19 @@ function applyControls(controls) {
       paddle.x = mouseX - paddle.width / 2
     }
   }
-
-  currentControls = controls
 }
 
-function runControls() {
-  let controls = localStorage.getItem('controls') || 'mouse'
-  if (controls !== currentControls) {
-    applyControls(controls)
+let brickGrid = null
+let lastDifficulty = null
+
+function getDifficultyGrid() {
+  if (difficulty !== lastDifficulty) {
+    // Difficulty changed → regenerate grid
+    brickGrid = createBrickGrid(difficulty)
+    lastDifficulty = difficulty
   }
+  return brickGrid
 }
-
-// React when localStorage changes (from settings menu or other tab)
-window.addEventListener('storage', (e) => {
-  if (e.key === 'controls') {
-    applyControls(e.newValue)
-  }
-})
-
 function gameLoop() {
   timerAnimation()
   setTimeout(() => {
@@ -56,6 +73,7 @@ function gameLoop() {
     updateBall()
     updatePaddle()
     drawPaddle()
+    drawBricks(getDifficultyGrid())
     drawBall()
   }, 3000)
   requestAnimationFrame(gameLoop)
