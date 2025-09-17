@@ -68,7 +68,10 @@ function setUITheme(theme) {
       'radial-gradient(ellipse at bottom, #d1d2d2ff 0%, #424243ff 100%)'
     )
     document.documentElement.style.setProperty('--text-color', '#191919')
-
+    document.documentElement.style.setProperty(
+      '--background-color',
+      '#d1d2d2ff'
+    )
     document.documentElement.style.setProperty(
       '--header-shadow',
       '0 0 10px #fff, -5px 10px 0 #fff, 10px 10px 0 #ddd'
@@ -79,6 +82,7 @@ function setUITheme(theme) {
       'radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%)'
     )
     document.documentElement.style.setProperty('--text-color', '#ffffff')
+    document.documentElement.style.setProperty('--background-color', '#191919')
     document.documentElement.style.setProperty(
       '--header-shadow',
       '0 0 25px #777, -5px 10px 0 #111, 10px 10px 0 #000'
@@ -162,7 +166,7 @@ document.querySelectorAll('.landing li').forEach((li) => {
 // Start Game Display
 function startGame() {
   document.querySelector('.landing').classList.add('hidden')
-  document.getElementById('gameCanvas').classList.remove('hidden')
+  document.querySelector('.game-container').classList.remove('hidden')
 }
 
 const scores = localStorage.getItem('scores') || [

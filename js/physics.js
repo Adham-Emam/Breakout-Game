@@ -2,6 +2,31 @@ const canvas = document.getElementById('gameCanvas')
 const ctx = canvas.getContext('2d')
 let mouseX = canvas.width / 2
 
+let ball = {
+  x: canvas.width / 2,
+  y: canvas.height - 30,
+  radius: 10,
+  vx: 5,
+  vy: -5,
+  trail: [],
+}
+
+function getPaddleWidth() {
+  const diff = localStorage.getItem('difficulty')
+  if (diff === 'insane') return 120
+  if (diff === 'hard') return 160
+  return 250
+}
+
+const paddle = {
+  x: canvas.width / 2 - 125,
+  y: canvas.height - 20,
+  get width() {
+    return getPaddleWidth()
+  },
+  height: 15,
+}
+
 function getThemeColor() {
   return localStorage.getItem('gameTheme') || '#ffffff'
 }
@@ -33,21 +58,6 @@ function setBallSpeed(multiplier) {
   // recompute velocity components
   ball.vx = Math.cos(angle) * newSpeed
   ball.vy = Math.sin(angle) * newSpeed
-}
-
-let ball = {
-  x: canvas.width / 2,
-  y: canvas.height - 30,
-  radius: 10,
-  vx: 5,
-  vy: -5,
-  trail: [],
-}
-const paddle = {
-  x: canvas.width / 2 - 80,
-  y: canvas.height - 20,
-  width: 160,
-  height: 15,
 }
 
 function resizeCanvas() {
@@ -176,9 +186,7 @@ function updateBall() {
     if (localStorage.getItem('difficulty') === 'hard') {
       setBallSpeed(1.01)
     } else if (localStorage.getItem('difficulty') === 'insane') {
-      setBallSpeed(1.05)
-      //  console the new speed
-      console.log('ball speed:', speed)
+      setBallSpeed(1.02)
     }
   }
 
@@ -196,41 +204,6 @@ function resetBall() {
   ball.trail = []
 }
 
-let currentControls = null
-let paddleSpeed = canvas.width * 0.01 // 1% of screen width per frame
-let leftPressed = false
-let rightPressed = false
-
-function applyControls(controls) {
-  // Remove old listeners
-  document.onkeydown = null
-  document.onkeyup = null
-  canvas.onmousemove = null
-
-  if (controls === 'keyboard') {
-    document.onkeydown = (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
-        leftPressed = true
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
-        rightPressed = true
-    }
-    document.onkeyup = (e) => {
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
-        leftPressed = false
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
-        rightPressed = false
-    }
-  } else if (controls === 'mouse') {
-    canvas.onmousemove = (e) => {
-      const rect = canvas.getBoundingClientRect()
-      mouseX = e.clientX - rect.left
-      paddle.x = mouseX - paddle.width / 2
-    }
-  }
-
-  currentControls = controls
-}
-
 function updatePaddle() {
   if (leftPressed) {
     paddle.x -= paddleSpeed
@@ -245,28 +218,3 @@ function updatePaddle() {
     paddle.x = canvas.width - paddle.width
   }
 }
-
-function runControls() {
-  let controls = localStorage.getItem('controls') || 'mouse'
-  if (controls !== currentControls) {
-    applyControls(controls)
-  }
-}
-
-// React when localStorage changes (from settings menu or other tab)
-window.addEventListener('storage', (e) => {
-  if (e.key === 'controls') {
-    applyControls(e.newValue)
-  }
-})
-
-function gameLoop() {
-  runControls() // ensures controls applied at least once
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  updateBall()
-  updatePaddle()
-  drawPaddle()
-  drawBall()
-  requestAnimationFrame(gameLoop)
-}
-gameLoop()
