@@ -267,6 +267,7 @@ input {
 .game-container .attempts-container img {
   width: 30px;
   height: 30px;
+  margin: 0 5px;
 }
 .game-container .attempts-container img[alt='Heart-empty'] {
   filter: brightness(0) invert(1); /* turns black to white */
