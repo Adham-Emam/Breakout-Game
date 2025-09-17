@@ -135,10 +135,18 @@ function selectDifficulty() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.difficulty').classList.remove('hidden')
 }
-function setDifficulty(difficulty) {
-  localStorage.setItem('difficulty', difficulty)
-  startGame()
-}
+// Set difficulty in localStorage and start game loop
+document.querySelectorAll('.difficulty li').forEach((li) => {
+  const difficulty = li.dataset.difficulty
+
+  li.addEventListener('click', () => {
+    if (difficulty) {
+      localStorage.setItem('difficulty', difficulty)
+    }
+    startGame()
+  })
+})
+
 function openMainMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.main-menu').classList.remove('hidden')
@@ -190,6 +198,7 @@ document.querySelectorAll('.landing li').forEach((li) => {
 function startGame() {
   document.querySelector('.landing').classList.add('hidden')
   document.querySelector('.game-container').classList.remove('hidden')
+  gameLoop()
 }
 
 const scores = localStorage.getItem('scores') || [
@@ -208,6 +217,21 @@ scores.forEach((entry) => {
   row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td>`
   tbody.appendChild(row)
 })
+
+function timerAnimation() {
+  const timeContainer = document.querySelector('.timer-overlay')
+  let time = parseInt(timeContainer.innerText)
+
+  setInterval(() => {
+    time--
+    timeContainer.innerText = time
+
+    if (time === 0) {
+      timeContainer.classList.add('hidden')
+      clearInterval()
+    }
+  }, 1000)
+}
 
 // Create Brick Layout
 function createBrickGrid(level) {

@@ -48,13 +48,15 @@ window.addEventListener('storage', (e) => {
 })
 
 function gameLoop() {
-  runControls() // ensures controls applied at least once
+  timerAnimation()
+  setTimeout(() => {
+    runControls() // ensures controls applied at least once
 
-  ctx.clearRect(0, 0, canvas.width, canvas.height)
-  updateBall()
-  updatePaddle()
-  drawPaddle()
-  drawBall()
+    ctx.clearRect(0, 0, canvas.width, canvas.height)
+    updateBall()
+    updatePaddle()
+    drawPaddle()
+    drawBall()
+  }, 3000)
   requestAnimationFrame(gameLoop)
 }
-gameLoop()

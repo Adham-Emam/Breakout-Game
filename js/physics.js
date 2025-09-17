@@ -196,13 +196,14 @@ function updateBall() {
 }
 function resetBall() {
   const baseSpeed = getBaseBallSpeed()
-  ball.x = canvas.width / 2
-  ball.y = canvas.height - 100
+  ball.x = paddle.x + paddle.width / 2
+  ball.y = paddle.y - ball.radius
 
   ball.vx = baseSpeed * (Math.random() > 0.5 ? 1 : -1) // random left/right start
   ball.vy = -baseSpeed
   ball.trail = []
 }
+resetBall()
 
 function updatePaddle() {
   if (leftPressed) {

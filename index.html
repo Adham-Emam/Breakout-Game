@@ -37,10 +37,10 @@
           <li onclick="openMainMenu()">Back to Menu</li>
         </ul>
         <ul class="difficulty hidden">
-          <li onclick="setDifficulty('easy')">Easy</li>
-          <li onclick="setDifficulty('medium')">Medium</li>
-          <li onclick="setDifficulty('hard')">Hard</li>
-          <li onclick="setDifficulty('insane')" class="insane">
+          <li data-difficulty="easy">Easy</li>
+          <li data-difficulty="medium">Medium</li>
+          <li data-difficulty="hard">Hard</li>
+          <li data-difficulty="insane" class="insane">
             <span class="lava">Insane</span>
           </li>
           <li onclick="openStartMenu()">Back</li>
@@ -101,6 +101,7 @@
         </div>
       </section>
       <section class="game-container hidden">
+        <div class="timer-overlay">3</div>
         <header>
           <div class="score-container">
             <h4>Score: <span id="score">0</span></h4>
