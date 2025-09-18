@@ -155,7 +155,7 @@ function createBrickGrid(level) {
       // Randomly populate the row with a minimum of 60% and a maximum of 85% of bricks
       const isbrick = Math.random() < 0.75
 
-      if (isbrick) { remainingBricks = remainingBricks + 2 }
+      if (isbrick) { remainingBricks += 2 }
       row.push(isbrick)
     }
     // Mirror the row to ensure symmetry
@@ -232,10 +232,9 @@ function checkBrickCollision() {
           // Decrease remaining bricks count
           remainingBricks--
 
-          console.log(remainingBricks)
 
           // Update score
-          score += 10
+          score += scoreUpdate[difficulty]
           scoreContainer.textContent = score
 
           // Determine collision side and bounce accordingly

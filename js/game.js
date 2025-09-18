@@ -3,6 +3,13 @@ let score = 0
 const scoreContainer = document.querySelector('.score-container #score')
 scoreContainer.textContent = score
 
+const scoreUpdate = {
+  easy: 5,
+  normal: 10,
+  hard: 15,
+  insane: 20,
+}
+
 // Generate Hearts
 let attempts = 3
 const heartContainer = document.querySelector('.attempts-container')
