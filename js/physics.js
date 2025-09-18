@@ -2,6 +2,8 @@ const canvas = document.getElementById('gameCanvas')
 const ctx = canvas.getContext('2d')
 let mouseX = canvas.width / 2
 
+let remainingBricks = 0
+
 let ball = {
   x: canvas.width / 2,
   y: canvas.height - 30,
@@ -129,11 +131,180 @@ function drawPaddle() {
   ctx.closePath()
 }
 
+
+let grid = []
+
+// Create Brick Layout
+function createBrickGrid(level) {
+
+  grid = []
+
+  // Define the number of rows for each level
+  const levelRows = {
+    easy: 2,
+    normal: 4,
+    hard: 6,
+    insane: 8,
+  }
+
+  // Iterate over the number of rows for the given level
+  for (let i = 0; i < levelRows[level]; i++) {
+    let row = []
+    // Iterate over half the number of columns (6)
+    for (let j = 0; j < 6; j++) {
+      // Randomly populate the row with a minimum of 60% and a maximum of 85% of bricks
+      const isbrick = Math.random() < 0.75
+
+      if (isbrick) { remainingBricks = remainingBricks + 2 }
+      row.push(isbrick)
+    }
+    // Mirror the row to ensure symmetry
+    let reversedRow = [...row].reverse()
+    row.push(...reversedRow)
+    grid.push(row)
+  }
+  return grid
+}
+
+// Bricks config
+function getBrickDimensions() {
+  return {
+    width: canvas.width * 0.06,
+    height: canvas.height * 0.03,
+  }
+}
+
+const brickPadding = 10
+const brickOffsetTop = 25
+
+function drawBricks(grid) {
+  let color = getThemeColor()
+  const { width: brickWidth, height: brickHeight } = getBrickDimensions()
+
+  // total grid width = (bricks in row * width) + (padding * gaps)
+  const totalGridWidth =
+    grid[0].length * brickWidth + (grid[0].length - 1) * brickPadding
+
+  // Center horizontally
+  const brickOffsetLeft = (canvas.width - totalGridWidth) / 2
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      if (grid[r][c]) {
+        // Count remaining bricks
+
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop
+
+        ctx.beginPath()
+        ctx.rect(brickX, brickY, brickWidth, brickHeight)
+        ctx.fillStyle = color
+        ctx.fill()
+        ctx.closePath()
+      }
+    }
+  }
+}
+
+function checkBrickCollision() {
+  if (!grid || grid.length === 0) return // Safety check
+
+  const { width: brickWidth, height: brickHeight } = getBrickDimensions()
+  const totalGridWidth = grid[0].length * brickWidth + (grid[0].length - 1) * brickPadding
+  const brickOffsetLeft = (canvas.width - totalGridWidth) / 2
+
+  for (let r = 0; r < grid.length; r++) {
+    for (let c = 0; c < grid[r].length; c++) {
+      if (grid[r][c]) {
+        const brickX = c * (brickWidth + brickPadding) + brickOffsetLeft
+        const brickY = r * (brickHeight + brickPadding) + brickOffsetTop
+
+        // Check if ball intersects with brick
+        if (
+          ball.x + ball.radius >= brickX &&
+          ball.x - ball.radius <= brickX + brickWidth &&
+          ball.y + ball.radius >= brickY &&
+          ball.y - ball.radius <= brickY + brickHeight
+        ) {
+          // Remove the brick
+          grid[r][c] = false
+
+          // Decrease remaining bricks count
+          remainingBricks--
+
+          console.log(remainingBricks)
+
+          // Update score
+          score += 10
+          scoreContainer.textContent = score
+
+          // Determine collision side and bounce accordingly
+          const ballCenterX = ball.x
+          const ballCenterY = ball.y
+          const brickCenterX = brickX + brickWidth / 2
+          const brickCenterY = brickY + brickHeight / 2
+
+          const deltaX = ballCenterX - brickCenterX
+          const deltaY = ballCenterY - brickCenterY
+
+          // Calculate overlap on each axis
+          const overlapX = (brickWidth / 2 + ball.radius) - Math.abs(deltaX)
+          const overlapY = (brickHeight / 2 + ball.radius) - Math.abs(deltaY)
+
+          // Bounce based on smallest overlap (most likely collision side)
+          if (overlapX < overlapY) {
+            // Horizontal collision (left or right side)
+            ball.vx = -ball.vx
+            // Move ball out of brick
+            if (deltaX > 0) {
+              ball.x = brickX + brickWidth + ball.radius
+            } else {
+              ball.x = brickX - ball.radius
+            }
+          } else {
+            // Vertical collision (top or bottom side)
+            ball.vy = -ball.vy
+            // Move ball out of brick
+            if (deltaY > 0) {
+              ball.y = brickY + brickHeight + ball.radius
+            } else {
+              ball.y = brickY - ball.radius
+            }
+          }
+
+          // Check win condition
+          checkWinCondition()
+
+          return // Exit after first collision to prevent multiple hits per frame
+        }
+      }
+    }
+  }
+}
+
+
+function checkWinCondition() {
+  if (!grid || grid.length === 0) return // Safety check
+
+  if (remainingBricks === 0) {
+    // Player wins! You can add win logic here
+    console.log('You Win!')
+
+  }
+}
+
+
 //Ball physics
 function updateBall() {
   updateTrail()
   ball.x += ball.vx
   ball.y += ball.vy
+
+
+  //brick collision
+  checkBrickCollision()
+
+
 
   //wall collision
   if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= canvas.width) {
