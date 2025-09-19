@@ -134,9 +134,31 @@ function openMainMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.main-menu').classList.remove('hidden')
 }
+
+let scores = JSON.parse(localStorage.getItem('scores')) || [
+  { player: 'Adham', score: 150 },
+  { player: 'Nady', score: 200 },
+  { player: 'Youssef', score: 120 },
+  { player: 'Montaser', score: 100 },
+  { player: 'Mohamed', score: 90 },
+]
+
 function openLeaderboardMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
   document.querySelector('.leaderboard').classList.remove('hidden')
+
+  if (!localStorage.getItem('scores')) {
+    localStorage.setItem('scores', JSON.stringify(scores))
+  }
+
+  const tbody = document.querySelector('#leaderboard tbody')
+  tbody.innerHTML = '' // clear existing rows
+
+  scores.forEach((entry) => {
+    const row = document.createElement('tr')
+    row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td>`
+    tbody.appendChild(row)
+  })
 }
 function openSettingsMenu() {
   landingMenus.forEach((menu) => menu.classList.add('hidden'))
@@ -183,23 +205,6 @@ function startGame() {
   document.querySelector('.game-container').classList.remove('hidden')
   gameLoop()
 }
-
-const scores = [
-  { player: 'Adham', score: 150 },
-  { player: 'Nady', score: 200 },
-  { player: 'Youssef', score: 120 },
-  { player: 'Montaser', score: 100 },
-  { player: 'Mohamed', score: 90 },
-]
-
-const tbody = document.querySelector('#leaderboard tbody')
-tbody.innerHTML = '' // clear existing rows
-
-scores.forEach((entry) => {
-  const row = document.createElement('tr')
-  row.innerHTML = `<td>${entry.player}</td><td>${entry.score}</td>`
-  tbody.appendChild(row)
-})
 
 function timerAnimation() {
   const timeContainer = document.querySelector('.timer-overlay')

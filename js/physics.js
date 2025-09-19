@@ -131,12 +131,10 @@ function drawPaddle() {
   ctx.closePath()
 }
 
-
 let grid = []
 
 // Create Brick Layout
 function createBrickGrid(level) {
-
   grid = []
 
   // Define the number of rows for each level
@@ -155,7 +153,9 @@ function createBrickGrid(level) {
       // Randomly populate the row with a minimum of 60% and a maximum of 85% of bricks
       const isbrick = Math.random() < 0.75
 
-      if (isbrick) { remainingBricks += 2 }
+      if (isbrick) {
+        remainingBricks += 2
+      }
       row.push(isbrick)
     }
     // Mirror the row to ensure symmetry
@@ -175,7 +175,7 @@ function getBrickDimensions() {
 }
 
 const brickPadding = 10
-const brickOffsetTop = 25
+const brickOffsetTop = 50
 
 function drawBricks(grid) {
   let color = getThemeColor()
@@ -210,7 +210,8 @@ function checkBrickCollision() {
   if (!grid || grid.length === 0) return // Safety check
 
   const { width: brickWidth, height: brickHeight } = getBrickDimensions()
-  const totalGridWidth = grid[0].length * brickWidth + (grid[0].length - 1) * brickPadding
+  const totalGridWidth =
+    grid[0].length * brickWidth + (grid[0].length - 1) * brickPadding
   const brickOffsetLeft = (canvas.width - totalGridWidth) / 2
 
   for (let r = 0; r < grid.length; r++) {
@@ -232,7 +233,6 @@ function checkBrickCollision() {
           // Decrease remaining bricks count
           remainingBricks--
 
-
           // Update score
           score += scoreUpdate[difficulty]
           scoreContainer.textContent = score
@@ -247,8 +247,8 @@ function checkBrickCollision() {
           const deltaY = ballCenterY - brickCenterY
 
           // Calculate overlap on each axis
-          const overlapX = (brickWidth / 2 + ball.radius) - Math.abs(deltaX)
-          const overlapY = (brickHeight / 2 + ball.radius) - Math.abs(deltaY)
+          const overlapX = brickWidth / 2 + ball.radius - Math.abs(deltaX)
+          const overlapY = brickHeight / 2 + ball.radius - Math.abs(deltaY)
 
           // Bounce based on smallest overlap (most likely collision side)
           if (overlapX < overlapY) {
@@ -281,17 +281,27 @@ function checkBrickCollision() {
   }
 }
 
-
 function checkWinCondition() {
   if (!grid || grid.length === 0) return // Safety check
 
+  const playerName = localStorage.getItem('playerName')
   if (remainingBricks === 0) {
     // Player wins! You can add win logic here
-    console.log('You Win!')
+    // Loop over scores and update score if playerName exists
+    for (let i = 0; i < scores.length; i++) {
+      if (scores[i].player === playerName) {
+        scores[i].score += score
+        localStorage.setItem('scores', JSON.stringify(scores))
+        return
+      }
+    }
 
+    // Append new player object if not found
+    scores.push({ player: playerName, score: score })
+    localStorage.setItem('scores', JSON.stringify(scores))
+    console.log('You Win!')
   }
 }
-
 
 //Ball physics
 function updateBall() {
@@ -299,11 +309,8 @@ function updateBall() {
   ball.x += ball.vx
   ball.y += ball.vy
 
-
   //brick collision
   checkBrickCollision()
-
-
 
   //wall collision
   if (ball.x - ball.radius <= 0 || ball.x + ball.radius >= canvas.width) {
