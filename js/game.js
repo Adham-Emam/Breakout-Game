@@ -85,3 +85,144 @@ function gameLoop() {
   }, 3000)
   requestAnimationFrame(gameLoop)
 }
+document.getElementById('retry-btn').onclick = function () {
+  attempts = 3;
+  score = 0;
+  scoreContainer.textContent = score;
+  updateHearts();
+  hideGameOverPopup();
+  brickGrid = createBrickGrid(difficulty);
+  remainingBricks = brickGrid.flat().filter(Boolean).length;
+  resetBall();
+};
+
+
+
+document.getElementById('home-btn').onclick = function () {
+  hideGameOverPopup();
+  document.querySelector('.game-container').classList.add('hidden');
+  document.querySelector('.landing').classList.remove('hidden');
+  if (gameLoopId) {
+    cancelAnimationFrame(gameLoopId);
+    gameLoopId = null;
+  }
+};
+function showGameOverPopup() {
+  document.getElementById('game-over-popup').classList.remove('hidden');
+}
+
+function hideGameOverPopup() {
+  document.getElementById('game-over-popup').classList.add('hidden');
+}
+function loseAttempt() {
+  attempts--;
+  updateHearts();
+
+  if (attempts <= 0) {
+    showGameOverPopup();
+  } else {
+    resetBall();
+  }
+}
+
+function updateHearts() {
+  const heartContainer = document.querySelector('.attempts-container');
+  heartContainer.innerHTML = '';
+  for (let i = 0; i < attempts; i++) {
+    const heart = document.createElement('img');
+    heart.src = 'assets/images/heart_filled.png';
+    heart.alt = 'Heart-filled';
+    heartContainer.appendChild(heart);
+  }
+  for (let i = 0; i < 3 - attempts; i++) {
+    const heart = document.createElement('img');
+    heart.src = 'assets/images/heart_empty.png';
+    heart.alt = 'Heart-empty';
+    heartContainer.appendChild(heart);
+  }
+}
+function showWinPopup() {
+  document.getElementById('win-popup').classList.remove('hidden');
+}
+function hideWinPopup() {
+  document.getElementById('win-popup').classList.add('hidden');
+}
+
+document.getElementById('next-level-btn').onclick = function () {
+  hideWinPopup();
+  // Next Level logic
+  if (difficulty === 'insane') {
+    // Restart insane
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid('insane');
+  } else {
+    // Go to next difficulty (easy → normal → hard → insane)
+    let levels = ['easy', 'normal', 'hard', 'insane'];
+    let currentIdx = levels.indexOf(difficulty);
+    difficulty = levels[Math.min(currentIdx + 1, levels.length - 1)];
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid(difficulty);
+  }
+  remainingBricks = brickGrid.flat().filter(Boolean).length;
+  updateHearts();
+  scoreContainer.textContent = score;
+  resetBall();
+  // Optionally: update any UI about current level/difficulty here
+};
+
+document.getElementById('win-home-btn').onclick = function () {
+  hideWinPopup();
+  document.querySelector('.game-container').classList.add('hidden');
+  document.querySelector('.landing').classList.remove('hidden');
+};
+document.getElementById('next-level-btn').onclick = function () {
+  hideWinPopup();
+  // Next Level logic
+  if (difficulty === 'insane') {
+    // Restart insane
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid('insane');
+  } else {
+    // Go to next difficulty (easy → normal → hard → insane)
+    let levels = ['easy', 'normal', 'hard', 'insane'];
+    let currentIdx = levels.indexOf(difficulty);
+    difficulty = levels[Math.min(currentIdx + 1, levels.length - 1)];
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid(difficulty);
+  }
+  remainingBricks = brickGrid.flat().filter(Boolean).length;
+  updateHearts();
+  scoreContainer.textContent = score;
+  resetBall();
+};
+document.getElementById('next-level-btn').onclick = function () {
+  hideWinPopup();
+  // Next Level logic
+  if (difficulty === 'insane') {
+    // Restart insane
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid('insane');
+  } else {
+    // Go to next difficulty (easy → normal → hard → insane)
+    let levels = ['easy', 'normal', 'hard', 'insane'];
+    let currentIdx = levels.indexOf(difficulty);
+    difficulty = levels[Math.min(currentIdx + 1, levels.length - 1)];
+    score = 0;
+    attempts = 3;
+    brickGrid = createBrickGrid(difficulty);
+  }
+  remainingBricks = brickGrid.flat().filter(Boolean).length;
+  updateHearts();
+  scoreContainer.textContent = score;
+  resetBall();
+};
+document.getElementById('win-home-btn').onclick = function () {
+  hideWinPopup();
+  document.querySelector('.game-container').classList.add('hidden');
+  document.querySelector('.landing').classList.remove('hidden');
+};

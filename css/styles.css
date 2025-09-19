@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap");
 
 :root {
   --game-theme: #ffffff;
@@ -23,7 +23,7 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Press Start 2P', monospace;
+  font-family: "Press Start 2P", monospace;
   transition-duration: 0.5s;
 }
 body {
@@ -76,7 +76,7 @@ input {
 }
 
 #stars:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 1px;
@@ -92,7 +92,7 @@ input {
 }
 
 #stars2:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 2px;
@@ -108,7 +108,7 @@ input {
 }
 
 #stars3:after {
-  content: ' ';
+  content: " ";
   position: absolute;
   top: 2000px;
   width: 3px;
@@ -156,11 +156,11 @@ input {
   transition-duration: 0.2s;
 }
 .landing ul li::before {
-  content: '>';
+  content: ">";
   margin-right: 0.5em;
 }
 .landing ul li::after {
-  content: '<';
+  content: "<";
   margin-left: 0.5em;
 }
 .landing ul li:hover,
@@ -221,7 +221,7 @@ input {
   width: 100%;
   border-collapse: collapse;
   color: #fff;
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
 }
 
 #leaderboard th,
@@ -283,11 +283,51 @@ input {
   height: 30px;
   margin: 0 5px;
 }
-.game-container .attempts-container img[alt='Heart-empty'] {
+.game-container .attempts-container img[alt="Heart-empty"] {
   filter: brightness(0) invert(1); /* turns black to white */
 }
 #gameCanvas {
   width: 100vw;
   height: calc(100vh - 100px);
+}
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10;
+}
+.popup-content {
+  background: #222;
+  padding: 2em 3em;
+  border-radius: 18px;
+  box-shadow: 0 4px 60px #000;
+  text-align: center;
+}
+.popup-content h2 {
+  margin-bottom: 20px;
+  color: var(--red);
+  font-size: 2em;
+}
+.popup-content button {
+  margin: 10px 20px;
+  padding: 12px 32px;
+  font-size: 1em;
+  border-radius: 10px;
+  border: none;
+  background: var(--game-theme);
+  color: #222;
+  cursor: pointer;
+  font-family: "Press Start 2P", monospace;
+  transition: 0.25s;
+}
+.popup-content button:hover {
+  background: var(--red);
+  color: #fff;
 }
 /* End Game Canvas */
