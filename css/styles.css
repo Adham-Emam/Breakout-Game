@@ -26,6 +26,7 @@
   font-family: "Press Start 2P", monospace;
   transition-duration: 0.5s;
 }
+
 body {
   background-color: var(--background-color);
   background: var(--gradient);
@@ -36,13 +37,16 @@ a {
   text-decoration: none;
   color: #ffffff;
 }
+
 ul {
   list-style: none;
 }
+
 input {
   outline: none;
   border: none;
 }
+
 .container {
   height: 100vh;
   width: 100vw;
@@ -53,6 +57,7 @@ input {
   align-items: center;
   text-align: center;
 }
+
 .hidden {
   display: none !important;
 }
@@ -120,6 +125,7 @@ input {
   from {
     transform: translateY(0px);
   }
+
   to {
     transform: translateY(-2000px);
   }
@@ -135,10 +141,12 @@ input {
   justify-content: center;
   align-items: center;
 }
+
 .landing h1 {
   font-size: 4.5em;
   text-shadow: var(--header-shadow);
 }
+
 .landing ul {
   margin-top: 1em;
   display: flex;
@@ -150,27 +158,33 @@ input {
   padding: 20px;
   cursor: pointer;
 }
+
 .landing ul li::before,
 .landing ul li::after {
   opacity: 0;
   transition-duration: 0.2s;
 }
+
 .landing ul li::before {
   content: ">";
   margin-right: 0.5em;
 }
+
 .landing ul li::after {
   content: "<";
   margin-left: 0.5em;
 }
+
 .landing ul li:hover,
 .landing ul li:hover {
   text-shadow: 0 0 25px #777;
 }
+
 .landing ul li:hover::before,
 .landing ul li:hover::after {
   opacity: 1;
 }
+
 .start-menu input {
   background-color: transparent;
   color: var(--text-color);
@@ -181,10 +195,12 @@ input {
   padding: 10px 20px;
   text-align: center;
 }
+
 .start-menu .error {
   color: var(--red);
   margin: 0.5em 0 1em 0;
 }
+
 .sound-control {
   position: absolute;
   right: 20px;
@@ -200,9 +216,11 @@ input {
   color: var(--text-color);
   cursor: pointer;
 }
+
 .sound-control:hover i {
   opacity: 0.5;
 }
+
 .lava {
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' height='100%25' width='100%25'%3E%3Cdefs%3E%3Cfilter id='lava' color-interpolation-filters='sRGB' x='0%25' y='0%25' height='100%25' width='100%25'%3E%3CfeTurbulence result='cloudbase' baseFrequency='0.01' numOctaves='3' seed='1' /%3E%3CfeColorMatrix in='cloudbase' type='hueRotate' values='0' result='cloud'%3E%3Canimate attributeName='values' from='0' to='360' dur='4s' repeatCount='indefinite' /%3E%3C/feColorMatrix%3E%3CfeColorMatrix in='cloud' result='wispy' type='matrix' values='-3.4 -3.8 0.8 3.3 4.9 1.9 -2.6 -4.4 0.3 1.2 -2.3 -0.9 -1.4 -1.6 -1.6 4.8 2.8 4.2 2.1 2.1' /%3E%3C/filter%3E%3C/defs%3E%3Crect width='100%25' height='100%25' filter='url(%23lava)'%3E%3C/rect%3E%3C/svg%3E");
   background-size: cover;
@@ -212,10 +230,12 @@ input {
   background-clip: text;
   font-weight: bold;
 }
+
 .insane {
   text-align: center;
   color: #fff;
 }
+
 /* Start LeaderBoard */
 #leaderboard {
   width: 100%;
@@ -250,6 +270,7 @@ input {
   align-items: center;
   height: 100vh;
 }
+
 .game-container .timer-overlay {
   position: absolute;
   left: 0;
@@ -264,6 +285,7 @@ input {
   color: var(--text-color);
   text-shadow: var(--header-shadow);
 }
+
 .game-container header {
   width: 100%;
   height: 80px;
@@ -275,21 +297,27 @@ input {
   color: var(--text-color);
   border-bottom: 1px solid var(--text-color);
 }
+
 .game-container div {
   flex: 1;
 }
+
 .game-container .attempts-container img {
   width: 30px;
   height: 30px;
   margin: 0 5px;
 }
+
 .game-container .attempts-container img[alt="Heart-empty"] {
-  filter: brightness(0) invert(1); /* turns black to white */
+  filter: brightness(0) invert(1);
+  /* turns black to white */
 }
+
 #gameCanvas {
   width: 100vw;
   height: calc(100vh - 100px);
 }
+
 .popup {
   position: fixed;
   top: 0;
@@ -302,6 +330,9 @@ input {
   align-items: center;
   z-index: 10;
 }
+
+
+
 .popup-content {
   background: #222;
   padding: 2em 3em;
@@ -309,11 +340,13 @@ input {
   box-shadow: 0 4px 60px #000;
   text-align: center;
 }
+
 .popup-content h2 {
   margin-bottom: 20px;
   color: var(--red);
   font-size: 2em;
 }
+
 .popup-content button {
   margin: 10px 20px;
   padding: 12px 32px;
@@ -326,8 +359,10 @@ input {
   font-family: "Press Start 2P", monospace;
   transition: 0.25s;
 }
+
 .popup-content button:hover {
   background: var(--red);
   color: #fff;
 }
+
 /* End Game Canvas */

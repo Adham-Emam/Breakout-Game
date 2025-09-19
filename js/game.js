@@ -40,12 +40,14 @@ function runControls() {
 
   if (controls === 'keyboard') {
     document.onkeydown = (e) => {
+      if (isPaused) return; // Don't process game controls when paused
       if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
         leftPressed = true
       if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
         rightPressed = true
     }
     document.onkeyup = (e) => {
+      if (isPaused) return; // Don't process game controls when paused
       if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
         leftPressed = false
       if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
@@ -53,12 +55,34 @@ function runControls() {
     }
   } else if (controls === 'mouse') {
     canvas.onmousemove = (e) => {
+      if (isPaused) return; // Don't process game controls when paused
       const rect = canvas.getBoundingClientRect()
       mouseX = e.clientX - rect.left
       paddle.x = mouseX - paddle.width / 2
     }
   }
 }
+
+
+
+
+let isPaused = false;
+
+// ESC key listener
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') {
+    togglePause();
+  }
+});
+
+
+function togglePause() {
+  isPaused = !isPaused;
+  document.querySelector('.popup.pause-menu').classList.toggle('hidden');
+  document.querySelector('.popup-container').classList.toggle('hidden');
+}
+
+
 
 let brickGrid = null
 let lastDifficulty = null
@@ -72,19 +96,25 @@ function getDifficultyGrid() {
   return brickGrid
 }
 function gameLoop() {
-  timerAnimation()
-  setTimeout(() => {
-    runControls() // ensures controls applied at least once
+  if (!isPaused) {
+    timerAnimation()
+    setTimeout(() => {
+      if (!isPaused) { // Check again after the timeout
+        runControls() // ensures controls applied at least once
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height)
-    updateBall()
-    updatePaddle()
-    drawPaddle()
-    drawBricks(getDifficultyGrid())
-    drawBall()
-  }, 3000)
+        ctx.clearRect(0, 0, canvas.width, canvas.height)
+        updateBall()
+        updatePaddle()
+        drawPaddle()
+        drawBricks(getDifficultyGrid())
+        drawBall()
+      }
+    }, 3000)
+  }
   requestAnimationFrame(gameLoop)
 }
+
+
 document.getElementById('retry-btn').onclick = function () {
   attempts = 3;
   score = 0;
