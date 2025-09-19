@@ -86,6 +86,7 @@ function togglePause() {
 
 let brickGrid = null
 let lastDifficulty = null
+let gameRunning = true;
 
 function getDifficultyGrid() {
   if (difficulty !== lastDifficulty) {
@@ -95,35 +96,43 @@ function getDifficultyGrid() {
   }
   return brickGrid
 }
-function gameLoop() {
-  if (!isPaused) {
-    timerAnimation()
-    setTimeout(() => {
-      if (!isPaused) { // Check again after the timeout
-        runControls() // ensures controls applied at least once
 
-        ctx.clearRect(0, 0, canvas.width, canvas.height)
-        updateBall()
-        updatePaddle()
-        drawPaddle()
-        drawBricks(getDifficultyGrid())
-        drawBall()
-      }
-    }, 3000)
+
+function gameLoop() {
+  if (!isPaused && gameRunning) { // Check if game is still running
+    timerAnimation()
+
+    if (!isPaused && gameRunning) { // Check again after the timeout
+      runControls()
+
+      ctx.clearRect(0, 0, canvas.width, canvas.height)
+      updateBall()
+      updatePaddle()
+      drawPaddle()
+      drawBricks(getDifficultyGrid())
+      drawBall()
+    }
+
   }
-  requestAnimationFrame(gameLoop)
+
+
+  if (gameRunning) { // Only continue loop if game is running
+    requestAnimationFrame(gameLoop)
+  }
 }
 
 
 document.getElementById('retry-btn').onclick = function () {
   attempts = 3;
   score = 0;
+  gameRunning = true; // Restart the game loop
   scoreContainer.textContent = score;
   updateHearts();
   hideGameOverPopup();
   brickGrid = createBrickGrid(difficulty);
   remainingBricks = brickGrid.flat().filter(Boolean).length;
   resetBall();
+  gameLoop(); // Restart the game loop
 };
 
 
@@ -149,6 +158,8 @@ function loseAttempt() {
   updateHearts();
 
   if (attempts <= 0) {
+    gameRunning = false; // Stop the game loop
+
     showGameOverPopup();
   } else {
     resetBall();
@@ -207,50 +218,8 @@ document.getElementById('win-home-btn').onclick = function () {
   document.querySelector('.game-container').classList.add('hidden');
   document.querySelector('.landing').classList.remove('hidden');
 };
-document.getElementById('next-level-btn').onclick = function () {
-  hideWinPopup();
-  // Next Level logic
-  if (difficulty === 'insane') {
-    // Restart insane
-    score = 0;
-    attempts = 3;
-    brickGrid = createBrickGrid('insane');
-  } else {
-    // Go to next difficulty (easy → normal → hard → insane)
-    let levels = ['easy', 'normal', 'hard', 'insane'];
-    let currentIdx = levels.indexOf(difficulty);
-    difficulty = levels[Math.min(currentIdx + 1, levels.length - 1)];
-    score = 0;
-    attempts = 3;
-    brickGrid = createBrickGrid(difficulty);
-  }
-  remainingBricks = brickGrid.flat().filter(Boolean).length;
-  updateHearts();
-  scoreContainer.textContent = score;
-  resetBall();
-};
-document.getElementById('next-level-btn').onclick = function () {
-  hideWinPopup();
-  // Next Level logic
-  if (difficulty === 'insane') {
-    // Restart insane
-    score = 0;
-    attempts = 3;
-    brickGrid = createBrickGrid('insane');
-  } else {
-    // Go to next difficulty (easy → normal → hard → insane)
-    let levels = ['easy', 'normal', 'hard', 'insane'];
-    let currentIdx = levels.indexOf(difficulty);
-    difficulty = levels[Math.min(currentIdx + 1, levels.length - 1)];
-    score = 0;
-    attempts = 3;
-    brickGrid = createBrickGrid(difficulty);
-  }
-  remainingBricks = brickGrid.flat().filter(Boolean).length;
-  updateHearts();
-  scoreContainer.textContent = score;
-  resetBall();
-};
+
+
 document.getElementById('win-home-btn').onclick = function () {
   hideWinPopup();
   document.querySelector('.game-container').classList.add('hidden');

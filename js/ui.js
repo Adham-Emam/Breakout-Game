@@ -204,6 +204,11 @@ function startGame() {
   document.querySelector('.landing').classList.add('hidden')
   document.querySelector('.game-container').classList.remove('hidden')
   gameLoop()
+  setTimeout(() => {
+    isPaused = false
+  }, 3000);
+  isPaused = true
+
 }
 
 function timerAnimation() {
