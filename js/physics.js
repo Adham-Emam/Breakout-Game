@@ -92,7 +92,7 @@ function drawTrail() {
     ctx.arc(trailPos.x, trailPos.y, size, 0, Math.PI * 2)
     ctx.fill()
   }
-  ctx.globalAlpha = 1.0 //this resets the transparency  ***https://developer.mozilla.org/en-US/docs/Web/API/CanvasRenderingContext2D/globalAlpha***
+  ctx.globalAlpha = 1.0
 }
 
 function updateTrail() {
@@ -114,8 +114,8 @@ function drawBallGlow() {
     ball.y,
     ball.radius * 2.5
   )
-  gradient.addColorStop(0, color + '80') // center = semi-transparent color **revise**
-  gradient.addColorStop(1, color + '00') // edge = fully transparent**revise**
+  gradient.addColorStop(0, color + '80') // center = semi-transparent color
+  gradient.addColorStop(1, color + '00') // edge = fully transparent
   ctx.fillStyle = gradient
   ctx.beginPath()
   ctx.arc(ball.x, ball.y, ball.radius * 2.5, 0, Math.PI * 2)
@@ -137,7 +137,6 @@ let grid = []
 // Create Brick Layout
 function createBrickGrid(level) {
   grid = []
-
 
   remainingBricks = 0
   // reset count each time grid is created
@@ -290,7 +289,7 @@ function checkBrickCollision() {
 let gameWon = false
 
 function checkWinCondition() {
-  if (!grid || grid.length === 0 || gameWon) return// Safety check
+  if (!grid || grid.length === 0 || gameWon) return // Safety check
 
   const playerName = localStorage.getItem('playerName')
   if (remainingBricks === 0) {
@@ -352,8 +351,6 @@ function updateBall() {
     if (difficulty === 'hard' || difficulty === 'insane') {
       const multiplier = difficulty === 'hard' ? 1.02 : 1.05
       setBallSpeed(multiplier)
-
-
     }
   }
 
@@ -373,8 +370,6 @@ function resetBall() {
   ball.vx = baseSpeed * Math.sin(randomAngle)
   ball.vy = -baseSpeed * Math.cos(randomAngle)
   ball.trail = []
-
-
 }
 
 resetBall()
