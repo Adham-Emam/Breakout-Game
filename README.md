@@ -22,7 +22,7 @@ Built with **HTML**, **CSS**, and **JavaScript**, it’s lightweight, responsive
 
 ---
 
-## 🎮 How to Play
+## How to Play
 
 ### Levels
 
