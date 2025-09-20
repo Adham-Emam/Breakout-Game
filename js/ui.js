@@ -201,27 +201,37 @@ document.querySelectorAll('.landing li').forEach((li) => {
 
 // Start Game Display
 function startGame() {
+  document.querySelector('.difficulty').classList.add('hidden')
   document.querySelector('.landing').classList.add('hidden')
   document.querySelector('.game-container').classList.remove('hidden')
+  attempts = 3
+  score = 0
+  gameRunning = true // Restart the game loop
+  scoreContainer.textContent = score
+  updateHearts()
+  brickGrid = createBrickGrid(difficulty)
+  remainingBricks = brickGrid.flat().filter(Boolean).length
+  resetBall()
+  timerAnimation()
+
   gameLoop()
   setTimeout(() => {
     isPaused = false
-  }, 3000);
+  }, 3000)
   isPaused = true
-
 }
-
 function timerAnimation() {
   const timeContainer = document.querySelector('.timer-overlay')
-  let time = parseInt(timeContainer.innerText)
-
-  setInterval(() => {
+  timeContainer.classList.remove('hidden')
+  let time = 3
+  timeContainer.innerText = time
+  let intervalId = setInterval(() => {
     time--
     timeContainer.innerText = time
 
     if (time === 0) {
       timeContainer.classList.add('hidden')
-      clearInterval()
+      clearInterval(intervalId)
     }
   }, 1000)
 }
