@@ -154,8 +154,8 @@ function createBrickGrid(level) {
     let row = []
     // Iterate over half the number of columns (6)
     for (let j = 0; j < 6; j++) {
-      // Randomly populate the row with a minimum of 60% and a maximum of 85% of bricks
-      const isBrick = Math.random() < 0.75
+      // Randomly populate the cell with a probability of 85% per cell
+      const isBrick = Math.random() < 0.85
 
       if (isBrick) {
         remainingBricks += 2
@@ -275,9 +275,10 @@ function checkBrickCollision() {
             }
           }
 
-          // Check win condition
-          // console.log(remainingBricks)
-          console.log(ball.vx, ball.vy)
+          if (!isMuted) {
+            document.querySelector('.sfx-container .brick_collision_sfx').play()
+          }
+
           checkWinCondition()
 
           return // Exit after first collision to prevent multiple hits per frame
@@ -294,6 +295,9 @@ function checkWinCondition() {
   const playerName = localStorage.getItem('playerName')
   if (remainingBricks === 0) {
     gameWon = true
+    if (!isMuted) {
+      document.querySelector('.sfx-container .win_sfx').play()
+    }
     toggleWinPopup()
     // Loop over scores and update score if playerName exists
     for (let i = 0; i < scores.length; i++) {

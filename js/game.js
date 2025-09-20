@@ -76,6 +76,15 @@ function backToMenu() {
   document.querySelector('.game-container').classList.add('hidden')
   document.querySelector('.landing').classList.remove('hidden')
   document.querySelector('.landing .main-menu').classList.remove('hidden')
+
+  // Pause Sound
+  const loseSfx = document.querySelector('.sfx-container .lose_sfx')
+  loseSfx.pause()
+  loseSfx.currentTime = 0
+  const winSfx = document.querySelector('.sfx-container .win_sfx')
+  winSfx.pause()
+  winSfx.currentTime = 0
+
   if (gameLoopId) {
     cancelAnimationFrame(gameLoopId)
     gameLoopId = null
@@ -108,6 +117,14 @@ function toggleWinPopup() {
     gameLoopId = null
   }
 
+  const nextLvlBtn = document.querySelector('.popup.win-menu .next')
+
+  if (difficulty === 'insane') {
+    nextLvlBtn.innerText = 'Restart Level'
+  } else {
+    nextLvlBtn.innerText = 'Next Level'
+  }
+
   document.querySelector('.popup-container').classList.toggle('hidden')
   document.querySelector('.popup.win-menu').classList.toggle('hidden')
 }
@@ -119,6 +136,10 @@ function loseAttempt() {
   if (attempts <= 0) {
     gameRunning = false // Stop the game loop
 
+    if (!isMuted) {
+      document.querySelector('.sfx-container .lose_sfx').play()
+    }
+
     toggleGameOverPopup('lose')
   } else {
     resetBall()
@@ -127,20 +148,18 @@ function loseAttempt() {
 
 function goToNextLevel() {
   toggleWinPopup()
+
+  const winSfx = document.querySelector('.sfx-container .win_sfx')
+  winSfx.pause()
+  winSfx.currentTime = 0
+
   // Next Level logic
-  const nextLvlBtn = document.querySelector('.popup.win-menu .next')
-  if (difficulty === 'insane') {
-    nextLvlBtn.classList.add('hidden')
-
-    // Restart insane
-  } else {
-    nextLvlBtn.classList.remove('hidden')
-
-    // Go to next difficulty (easy → normal → hard → insane)
+  if (difficulty !== 'insane') {
     let levels = ['easy', 'normal', 'hard', 'insane']
     let currentIdx = levels.indexOf(difficulty)
     difficulty = levels[currentIdx + 1]
   }
+  restartGame
   restartGame()
 }
 
