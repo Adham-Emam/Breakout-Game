@@ -207,6 +207,12 @@ let countdownActive = false
 
 // Start Game Display
 function startGame() {
+
+  if (gameLoopId) {
+    cancelAnimationFrame(gameLoopId)
+    gameLoopId = null
+  }
+
   document.querySelector('.difficulty').classList.add('hidden')
   document.querySelector('.landing').classList.add('hidden')
   document.querySelector('.game-container').classList.remove('hidden')

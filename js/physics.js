@@ -352,6 +352,8 @@ function updateBall() {
     if (difficulty === 'hard' || difficulty === 'insane') {
       const multiplier = difficulty === 'hard' ? 1.02 : 1.05
       setBallSpeed(multiplier)
+
+
     }
   }
 
@@ -371,6 +373,8 @@ function resetBall() {
   ball.vx = baseSpeed * Math.sin(randomAngle)
   ball.vy = -baseSpeed * Math.cos(randomAngle)
   ball.trail = []
+
+
 }
 
 resetBall()
