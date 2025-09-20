@@ -151,6 +151,9 @@ function openLeaderboardMenu() {
     localStorage.setItem('scores', JSON.stringify(scores))
   }
 
+  // sort scores depending on score
+  scores.sort((a, b) => b.score - a.score)
+
   const tbody = document.querySelector('#leaderboard tbody')
   tbody.innerHTML = '' // clear existing rows
 
