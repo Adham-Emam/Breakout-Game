@@ -206,7 +206,7 @@ function startGame() {
   document.querySelector('.game-container').classList.remove('hidden')
   attempts = 3
   score = 0
-  gameRunning = true // Restart the game loop
+  gameRunning = true
   scoreContainer.textContent = score
   updateHearts()
   brickGrid = createBrickGrid(difficulty)

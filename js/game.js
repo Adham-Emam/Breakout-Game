@@ -33,41 +33,6 @@ function updateHearts() {
   }
 }
 
-let paddleSpeed = canvas.width * 0.75 // 1% of screen width per frame
-let leftPressed = false
-let rightPressed = false
-
-function runControls() {
-  // Remove old listeners
-  document.onkeydown = null
-  document.onkeyup = null
-  canvas.onmousemove = null
-
-  if (controls === 'keyboard') {
-    document.onkeydown = (e) => {
-      if (isPaused) return // Don't process game controls when paused
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
-        leftPressed = true
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
-        rightPressed = true
-    }
-    document.onkeyup = (e) => {
-      if (isPaused) return // Don't process game controls when paused
-      if (e.key === 'ArrowLeft' || e.key === 'a' || e.key === 'A')
-        leftPressed = false
-      if (e.key === 'ArrowRight' || e.key === 'd' || e.key === 'D')
-        rightPressed = false
-    }
-  } else if (controls === 'mouse') {
-    canvas.onmousemove = (e) => {
-      if (isPaused) return // Don't process game controls when paused
-      const rect = canvas.getBoundingClientRect()
-      mouseX = e.clientX - rect.left
-      paddle.x = mouseX - paddle.width / 2
-    }
-  }
-}
-
 let isPaused = false
 
 // ESC key listener
@@ -97,12 +62,13 @@ function getDifficultyGrid() {
 }
 
 function restartGame() {
-  if (remainingBricks === 0) {
+  if (isPaused) {
+    togglePause()
+  } else if (remainingBricks === 0) {
     toggleWinPopup()
   } else if (attempts === 0) {
     toggleGameOverPopup()
   }
-
   startGame()
 }
 
@@ -160,14 +126,13 @@ function loseAttempt() {
 }
 
 function goToNextLevel() {
-  toggleGameOverPopup('win')
+  toggleWinPopup()
   // Next Level logic
   const nextLvlBtn = document.querySelector('.popup.win-menu .next')
   if (difficulty === 'insane') {
     nextLvlBtn.classList.add('hidden')
 
     // Restart insane
-    restartGame()
   } else {
     nextLvlBtn.classList.remove('hidden')
 
@@ -175,8 +140,8 @@ function goToNextLevel() {
     let levels = ['easy', 'normal', 'hard', 'insane']
     let currentIdx = levels.indexOf(difficulty)
     difficulty = levels[currentIdx + 1]
-    restartGame()
   }
+  restartGame()
 }
 
 function gameLoop() {
