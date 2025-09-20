@@ -138,6 +138,10 @@ let grid = []
 function createBrickGrid(level) {
   grid = []
 
+
+  remainingBricks = 0
+  // reset count each time grid is created
+
   // Define the number of rows for each level
   const levelRows = {
     easy: 2,
@@ -273,7 +277,8 @@ function checkBrickCollision() {
           }
 
           // Check win condition
-          console.log(remainingBricks)
+          // console.log(remainingBricks)
+          console.log(ball.vx, ball.vy)
           checkWinCondition()
 
           return // Exit after first collision to prevent multiple hits per frame
@@ -282,12 +287,14 @@ function checkBrickCollision() {
     }
   }
 }
+let gameWon = false
 
 function checkWinCondition() {
-  if (!grid || grid.length === 0) return // Safety check
+  if (!grid || grid.length === 0 || gameWon) return// Safety check
 
   const playerName = localStorage.getItem('playerName')
   if (remainingBricks === 0) {
+    gameWon = true
     toggleWinPopup()
     // Loop over scores and update score if playerName exists
     for (let i = 0; i < scores.length; i++) {

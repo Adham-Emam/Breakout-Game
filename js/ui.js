@@ -202,6 +202,9 @@ document.querySelectorAll('.landing li').forEach((li) => {
   })
 })
 
+let countdownActive = false
+
+
 // Start Game Display
 function startGame() {
   document.querySelector('.difficulty').classList.add('hidden')
@@ -209,20 +212,29 @@ function startGame() {
   document.querySelector('.game-container').classList.remove('hidden')
   attempts = 3
   score = 0
+  remainingBricks = 0
+  gameWon = false
   gameRunning = true
+
+
   scoreContainer.textContent = score
   updateHearts()
   brickGrid = createBrickGrid(difficulty)
-  remainingBricks = brickGrid.flat().filter(Boolean).length
   resetBall()
   timerAnimation()
 
   gameLoop()
+
+  countdownActive = true
   setTimeout(() => {
     isPaused = false
+    countdownActive = false  // Countdown finished, allow Esc again
   }, 3000)
   isPaused = true
+
 }
+
+
 function timerAnimation() {
   const timeContainer = document.querySelector('.timer-overlay')
   timeContainer.classList.remove('hidden')

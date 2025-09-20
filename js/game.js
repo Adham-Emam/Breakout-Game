@@ -43,6 +43,8 @@ document.addEventListener('keydown', (e) => {
 })
 
 function togglePause() {
+  if (countdownActive) return // Don't allow pausing during countdown
+
   isPaused = !isPaused
   document.querySelector('.popup-container').classList.toggle('hidden')
   document.querySelector('.popup.pause-menu').classList.toggle('hidden')
@@ -64,8 +66,6 @@ function getDifficultyGrid() {
 function restartGame() {
   if (isPaused) {
     togglePause()
-  } else if (remainingBricks === 0) {
-    toggleWinPopup()
   } else if (attempts === 0) {
     toggleGameOverPopup()
   }

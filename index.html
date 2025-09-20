@@ -1,159 +1,148 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Ball Busters</title>
 
-    <!-- Styles -->
-    <link rel="stylesheet" href="css/styles.css" />
-    <!-- FontAwesome CDN -->
-    <link
-      rel="stylesheet"
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
-    />
-  </head>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ball Busters</title>
 
-  <body>
-    <div class="container">
-      <section class="landing">
-        <div class="background">
-          <div id="stars"></div>
-          <div id="stars2"></div>
-          <div id="stars3"></div>
+  <!-- Styles -->
+  <link rel="stylesheet" href="css/styles.css" />
+  <!-- FontAwesome CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" />
+</head>
+
+<body>
+  <div class="container">
+    <section class="landing">
+      <div class="background">
+        <div id="stars"></div>
+        <div id="stars2"></div>
+        <div id="stars3"></div>
+      </div>
+
+      <h1>Ball Busters</h1>
+      <ul class="main-menu">
+        <li onclick="openStartMenu()">Start Game</li>
+        <li onclick="openLeaderboardMenu()">LeaderBoard</li>
+        <li onclick="openSettingsMenu()">Settings</li>
+      </ul>
+      <ul class="start-menu hidden">
+        <form>
+          <input type="text" placeholder="Enter your name" id="playerName" />
+        </form>
+        <div class="error hidden"></div>
+        <li onclick="validateName()">Next</li>
+        <li onclick="openMainMenu()">Back to Menu</li>
+      </ul>
+      <ul class="difficulty hidden">
+        <li data-difficulty="easy">Easy</li>
+        <li data-difficulty="normal">Normal</li>
+        <li data-difficulty="hard">Hard</li>
+        <li data-difficulty="insane" class="insane">
+          <span class="lava">Insane</span>
+        </li>
+        <li data-action="back">Back</li>
+      </ul>
+      <ul class="leaderboard hidden">
+        <table id="leaderboard">
+          <thead>
+            <tr>
+              <th>Player Name</th>
+              <th>Score</th>
+            </tr>
+          </thead>
+          <tbody>
+            <!-- rows will be injected from JS -->
+          </tbody>
+        </table>
+
+        <li onclick="openMainMenu()">Back to Menu</li>
+      </ul>
+      <ul class="settings hidden">
+        <li onclick="openControlsMenu()">Controls</li>
+        <li onclick="openThemeMenu()">Theme</li>
+        <li onclick="openMainMenu()">Back to Menu</li>
+      </ul>
+      <ul class="controls hidden">
+        <div class="options-container">
+          <li onclick="setControls('keyboard')">Keyboard</li>
+          <li onclick="setControls('mouse')">Mouse</li>
         </div>
-
-        <h1>Ball Busters</h1>
-        <ul class="main-menu">
-          <li onclick="openStartMenu()">Start Game</li>
-          <li onclick="openLeaderboardMenu()">LeaderBoard</li>
-          <li onclick="openSettingsMenu()">Settings</li>
-        </ul>
-        <ul class="start-menu hidden">
-          <form>
-            <input type="text" placeholder="Enter your name" id="playerName" />
-          </form>
-          <div class="error hidden"></div>
-          <li onclick="validateName()">Next</li>
-          <li onclick="openMainMenu()">Back to Menu</li>
-        </ul>
-        <ul class="difficulty hidden">
-          <li data-difficulty="easy">Easy</li>
-          <li data-difficulty="normal">Normal</li>
-          <li data-difficulty="hard">Hard</li>
-          <li data-difficulty="insane" class="insane">
-            <span class="lava">Insane</span>
+        <li onclick="openSettingsMenu()">Back</li>
+      </ul>
+      <ul class="theme hidden">
+        <h3>UI Theme</h3>
+        <li onclick="setUITheme('light')">Light</li>
+        <li onclick="setUITheme('dark')">Dark</li>
+        <h3>Game Theme</h3>
+        <form>
+          <li>
+            <input type="color" value="#ffffff" id="game-theme" onchange="setGameTheme()" />
           </li>
-          <li data-action="back">Back</li>
-        </ul>
-        <ul class="leaderboard hidden">
-          <table id="leaderboard">
-            <thead>
-              <tr>
-                <th>Player Name</th>
-                <th>Score</th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- rows will be injected from JS -->
-            </tbody>
-          </table>
+        </form>
+        <li onclick="openSettingsMenu()">Back</li>
+      </ul>
+      <div class="sound-control" onclick="toggleSound()">
+        <i class="fa-solid fa-volume-high"></i>
+        <i class="fa-solid fa-volume-xmark hidden"></i>
+      </div>
+      <div>
+        <audio src="assets/audio/btn_click_sfx.mp3" class="click_sfx hidden"></audio>
+      </div>
+    </section>
+    <section class="game-container hidden">
+      <div class="timer-overlay"></div>
+      <header>
+        <div class="score-container">
+          <h4>Score: <span id="score">0</span></h4>
+        </div>
+        <div class="attempts-container"></div>
+      </header>
 
-          <li onclick="openMainMenu()">Back to Menu</li>
-        </ul>
-        <ul class="settings hidden">
-          <li onclick="openControlsMenu()">Controls</li>
-          <li onclick="openThemeMenu()">Theme</li>
-          <li onclick="openMainMenu()">Back to Menu</li>
-        </ul>
-        <ul class="controls hidden">
-          <div class="options-container">
-            <li onclick="setControls('keyboard')">Keyboard</li>
-            <li onclick="setControls('mouse')">Mouse</li>
-          </div>
-          <li onclick="openSettingsMenu()">Back</li>
-        </ul>
-        <ul class="theme hidden">
-          <h3>UI Theme</h3>
-          <li onclick="setUITheme('light')">Light</li>
-          <li onclick="setUITheme('dark')">Dark</li>
-          <h3>Game Theme</h3>
-          <form>
+      <div class="popup-container hidden">
+        <div class="popup pause-menu hidden">
+          <h2>Game Paused</h2>
+          <ul>
+            <li><button onclick="togglePause()">Resume Game</button></li>
+            <li><button onclick="restartGame()">Restart Game</button></li>
+            <li><button onclick="backToMenu()">Exit to Home</button></li>
+          </ul>
+        </div>
+        <div class="popup win-menu hidden">
+          <h2>You Win!</h2>
+          <ul>
             <li>
-              <input
-                type="color"
-                value="#ffffff"
-                id="game-theme"
-                onchange="setGameTheme()"
-              />
+              <button onclick="goToNextLevel()" class="next">
+                Next Level
+              </button>
             </li>
-          </form>
-          <li onclick="openSettingsMenu()">Back</li>
-        </ul>
-        <div class="sound-control" onclick="toggleSound()">
-          <i class="fa-solid fa-volume-high"></i>
-          <i class="fa-solid fa-volume-xmark hidden"></i>
-        </div>
-        <div>
-          <audio
-            src="assets/audio/btn_click_sfx.mp3"
-            class="click_sfx hidden"
-          ></audio>
-        </div>
-      </section>
-      <section class="game-container hidden">
-        <div class="timer-overlay"></div>
-        <header>
-          <div class="score-container">
-            <h4>Score: <span id="score">0</span></h4>
-          </div>
-          <div class="attempts-container"></div>
-        </header>
 
-        <div class="popup-container hidden">
-          <div class="popup pause-menu hidden">
-            <h2>Game Paused</h2>
-            <ul>
-              <li><button onclick="togglePause()">Resume Game</button></li>
-              <li><button onclick="restartGame()">Restart Game</button></li>
-              <li><button onclick="backToMenu()">Exit to Home</button></li>
-            </ul>
-          </div>
-          <div class="popup win-menu hidden">
-            <h2>You Win!</h2>
-            <ul>
-              <li>
-                <button onclick="goToNextLevel()" class="next">
-                  Next Level
-                </button>
-              </li>
-              <li>
-                <button onclick="restartGame()">Retry</button>
-              </li>
-              <li>
-                <button onclick="backToMenu()">Exit to Home</button>
-              </li>
-            </ul>
-          </div>
-          <div class="popup lose-menu hidden">
-            <h2>Game Over</h2>
-            <ul>
-              <li>
-                <button onclick="restartGame()">Retry</button>
-              </li>
-              <li>
-                <button onclick="backToMenu()">Exit to Home</button>
-              </li>
-            </ul>
-          </div>
+            <li>
+              <button onclick="backToMenu()">Exit to Home</button>
+            </li>
+          </ul>
         </div>
+        <div class="popup lose-menu hidden">
+          <h2>Game Over</h2>
+          <ul>
+            <li>
+              <button onclick="restartGame()">Retry</button>
+            </li>
+            <li>
+              <button onclick="backToMenu()">Exit to Home</button>
+            </li>
+          </ul>
+        </div>
+      </div>
 
-        <canvas id="gameCanvas"></canvas>
-      </section>
-    </div>
+      <canvas id="gameCanvas"></canvas>
+    </section>
+  </div>
 
-    <script src="js/ui.js"></script>
-    <script src="js/physics.js"></script>
-    <script src="js/game.js"></script>
-  </body>
+  <script src="js/ui.js"></script>
+  <script src="js/physics.js"></script>
+  <script src="js/game.js"></script>
+</body>
+
 </html>
